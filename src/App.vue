@@ -1,28 +1,38 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <the-header :current-page="page"></the-header>
+    <div class="d-flex flex-column w-100">
+      <component :is="page"></component>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TheHeader from "@/components/TheHeader";
+import User from "@/components/features/User/User";
+import Admin from "@/components/features/Admin/Admin";
+import { eventBus } from "@/main";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    TheHeader,
+    User,
+    Admin
+  },
+  data() {
+    return {
+      page: eventBus.page
+    }
+  },
+  created() {
+    eventBus.$on('update:page', (page) => {
+      this.page = page;
+    })
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
